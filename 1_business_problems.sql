@@ -15,7 +15,7 @@ the total_sales per order_item_id(representing a single product)
 */
 ---------------------------------------------
 
-```sql
+
 -- Step 1: Creating new column
 ALTER TABLE order_items
 ADD COLUMN total_sales FLOAT;
@@ -47,7 +47,7 @@ GROUP BY
 ORDER BY 
 	total_sales DESC
 LIMIT 10;
-```
+
 	
 ---------------------------------------------
 /*
@@ -67,7 +67,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 SELECT
     c.category_id,
     c.category_name,
@@ -93,7 +93,7 @@ JOIN products p ON p.product_id = oi.product_id
 LEFT JOIN category c ON c.category_id = p.category_id
 GROUP BY c.category_id, c.category_name
 ORDER BY category_total_sales DESC;
-```
+
 
 ---------------------------------------------
 /*
@@ -111,7 +111,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 SELECT
 	c.customer_id,
 	CONCAT(c.first_name, ' ', c.last_name) AS full_name,
@@ -134,7 +134,7 @@ HAVING
 	COUNT(o.order_id) > 5
 ORDER BY
 	aov DESC
-```
+
 	
 ---------------------------------------------
 /*
@@ -154,7 +154,7 @@ Calculate % change = (current - last) / last * 100
 */
 ---------------------------------------------
 
-```sql
+
 WITH monthly_sales AS (
     SELECT
         EXTRACT(YEAR FROM o.order_date) AS year,
@@ -184,7 +184,7 @@ SELECT
     ) AS percentage_trend
 FROM sales_trend
 ORDER BY year, month;
-```
+
 
 ---------------------------------------------
 /*
@@ -201,7 +201,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 -- Option 1:
 SELECT 
 	c.customer_id,
@@ -225,7 +225,7 @@ WHERE
 		DISTINCT customer_id
 	FROM 
 		orders);
-```
+
 
 ---------------------------------------------
 /*
@@ -244,7 +244,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 WITH category_sales AS (
     SELECT 
         c.state_in AS state_in,
@@ -283,7 +283,7 @@ FROM ranked_sales r
 JOIN state_totals st ON r.state_in = st.state_in
 WHERE r.rank <= 2
 ORDER BY r.state_in, r.rank;
-```
+
 
 ---------------------------------------------
 /*
@@ -302,7 +302,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 SELECT 
 	c.customer_id AS customer_id,
 	CONCAT(c.first_name, ' ' , c.last_name) AS full_name,
@@ -320,7 +320,7 @@ ON
 	oi.order_id = o.order_id
 GROUP BY
 	c.customer_id
-```
+
 
 ---------------------------------------------
 /*
@@ -338,7 +338,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 SELECT 
 	p.product_id AS product_id, p.product_name AS product_name,
 	cat.category_name AS category_name, i.inventory_id AS inventory_id,
@@ -369,7 +369,7 @@ ORDER BY
         ELSE 4
     END,
     i.last_stock_date ASC;
-```
+
 
 ---------------------------------------------
 /*
@@ -388,7 +388,7 @@ Steps:
 */
 ---------------------------------------------
 
-```sql
+
 WITH delayed_orders AS (
     SELECT
         c.customer_id AS customer_id,
@@ -423,7 +423,7 @@ FROM delayed_orders AS d
 JOIN provider_delay_counts AS p 
     ON d.shipping_provider = p.shipping_provider
 ORDER BY p.provider_rank, d.days_to_ship DESC;
-```
+
 
 ---------------------------------------------
 /*
@@ -441,7 +441,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH status_counts AS (
     SELECT
         p.payment_status,
@@ -466,7 +466,7 @@ SELECT
 FROM status_counts sc
 CROSS JOIN totals t
 ORDER BY sc.status_count DESC;
-```
+
 
 --------------------------------------------
 /*
@@ -485,7 +485,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH top_sellers AS(
 SELECT
 	s.seller_id, s.seller_name,
@@ -525,7 +525,7 @@ FROM
 	seller_report
 GROUP BY 1,2,3
 ORDER BY success_orders_percentage DESC
-```
+
 
 --------------------------------------------
 /*
@@ -547,7 +547,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 SELECT
     p.product_id,
     p.product_name,
@@ -563,7 +563,7 @@ JOIN orders AS o
 WHERE o.order_status = 'Completed'
 GROUP BY p.product_id, p.product_name, p.cogs, p.price
 ORDER BY profit_margin DESC;
-```
+
 
 --------------------------------------------
 /*
@@ -586,7 +586,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 SELECT 
     p.product_id,
     p.product_name,
@@ -604,7 +604,7 @@ JOIN orders AS o
 GROUP BY p.product_id, p.product_name
 ORDER BY return_percentage DESC
 LIMIT 10;
-```
+
 
 --------------------------------------------
 /*
@@ -627,7 +627,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH six_month_non_sellers AS 
 (
 SELECT * FROM sellers
@@ -650,7 +650,7 @@ JOIN order_items AS oi
 ON oi.order_id = o.order_id
 GROUP BY 1,2
 ORDER BY last_sale_date
-```
+
 
 --------------------------------------------
 /*
@@ -674,7 +674,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH customer_report AS (
     SELECT 
         c.customer_id AS customer_id,
@@ -698,7 +698,7 @@ SELECT
     END AS customer_status
 FROM customer_report
 ORDER BY return_rank;
-```
+
 
 --------------------------------------------
 /*
@@ -724,7 +724,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH customer_report AS (
     SELECT 
         c.customer_id,
@@ -754,7 +754,7 @@ FROM (
 ) ranked
 WHERE sales_rank <= 5
 ORDER BY state_in, sales_rank;
-```
+
 
 --------------------------------------------
 /*
@@ -778,7 +778,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 SELECT
 	sp.shipping_providers AS shipping_provider,
 	COUNT(o.order_id) AS total_orders,
@@ -793,7 +793,7 @@ ON o.order_id = oi.order_id
 WHERE o.order_status IN ('Completed','Inprogress')
 GROUP BY sp.shipping_providers
 ORDER BY total_sales_by_shipping DESC;
-```
+
 
 --------------------------------------------
 /*
@@ -820,7 +820,7 @@ Steps:
 */
 --------------------------------------------
 
-```sql
+
 WITH previous_yr AS (
     SELECT
         p.product_id,
@@ -874,7 +874,7 @@ JOIN current_yr AS c
     ON p.product_id = c.product_id
 ORDER BY decrease_rank
 LIMIT 10;
-```
+
 
 --------------------------------------------
 /*
